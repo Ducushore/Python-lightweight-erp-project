@@ -27,9 +27,33 @@ def start_module():
     """
 
     # your code
-
-    pass
-
+    table = data_manager.get_table_from_file("crm/customers.csv")
+    title = "Customer Relationship Management"
+    list_options = ["Show Table", "Add to Table", "Remove from Table", "Update Table"]
+    exit_message = "Go Back"
+    ui.print_menu(title, list_options, exit_message)
+    option = input("Please enter a number: ")
+    while True:
+        ui.print_menu(title, list_options, exit_message)
+        if option == "1":
+            show_table(table)
+            # elif option == "2":
+            #     add()
+            # elif option == "3":
+            #     remove()
+            # elif option == "4":
+            #     update()
+            # elif option == "5":
+            #     get_persons_closest_to_average()
+            # elif option == "6":
+            #     get_persons_closest_to_average()
+            # elif option == "7":
+            #     store.main()
+        elif option == "0":
+            break
+        else:
+            raise KeyError("There is no such option.")
+            pass
 
 def show_table(table):
     """
@@ -44,7 +68,11 @@ def show_table(table):
 
     # your code
 
-    pass
+    header = ["ID", "Name", "E-Mail", "NL"]
+
+    ui.print_table(table, header)
+    start_module()
+
 
 
 def add(table):
@@ -59,7 +87,8 @@ def add(table):
     """
 
     # your code
-
+    data_manager.get_table_from_file(table)
+    get_inputs(list_labels, title)
     return table
 
 
@@ -76,7 +105,7 @@ def remove(table, id_):
     """
 
     # your code
-
+    data_manager.get_table_from_file(table)
     return table
 
 
