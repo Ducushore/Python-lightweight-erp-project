@@ -36,20 +36,21 @@ def start_module():
     table = data_manager.get_table_from_file("hr/persons.csv")
     while True:
         ui.print_menu("HR menu", options, "Back to Main Menu")
-        option = input("Please enter a number: ")
-        if option == "1":
+        option = ui.get_inputs([''], "Please enter a number: ")
+        if option[0] == "1":
             show_table(table)
-        elif option == "2":
+        elif option[0] == "2":
             add(table)
-        elif option == "3":
-            remove(table)
-        elif option == "4":
+        elif option[0] == "3":
+            id_ = ui.get_inputs(['ID: '], "Please type ID to remove ")
+            remove(table, id_)
+        elif option[0] == "4":
             update(table, table[0])
-        elif option == "5":
+        elif option[0] == "5":
             get_persons_closest_to_average()
-        elif option == "6":
+        elif option[0] == "6":
             get_persons_closest_to_average()
-        elif option == "0":
+        elif option[0] == "0":
             break
         else:
             raise KeyError("There is no such option.")
@@ -79,9 +80,10 @@ def add(table):
     Returns:
         Table with a new record
     """
-
-    # your code
-
+    list_labels = ['ID: ', 'Name :', 'Birth date: ']
+    new_item = ui.get_inputs(list_labels, "Please provide personal information")
+    table.append(new_item)
+    data_manager.write_table_to_file("hr/persons_test.csv", table)
     return table
 
 
