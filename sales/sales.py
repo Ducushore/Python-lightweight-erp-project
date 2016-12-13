@@ -42,7 +42,7 @@ def start_module():
         if option == "1":
             show_table(table)
         elif option == "2":
-            add()
+            table = add(table)
         elif option == "3":
             remove()
         elif option == "4":
@@ -83,8 +83,9 @@ def add(table):
         Table with a new record
     """
 
-    # your code
-
+    list_labels = ["ID: ", "Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
+    new_item = ui.get_inputs(list_labels, "Please provide your personal information")
+    table.append(new_item)
     return table
 
 
