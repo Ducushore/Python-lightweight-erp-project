@@ -53,7 +53,7 @@ def start_module():
             break
         else:
             raise KeyError("There is no such option.")
-            pass
+    pass
 
 def show_table(table):
     """
@@ -74,7 +74,6 @@ def show_table(table):
     start_module()
 
 
-
 def add(table):
     """
     Asks user for input and adds it into the table.
@@ -87,8 +86,7 @@ def add(table):
     """
 
     # your code
-    data_manager.get_table_from_file(table)
-    get_inputs(list_labels, title)
+
     return table
 
 
