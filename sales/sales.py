@@ -28,9 +28,33 @@ def start_module():
         None
     """
 
-    # your code
+    table = data_manager.get_table_from_file("sales/sales.csv")
+    options = ["Display a table",
+               "Add sale to table",
+               "Remove sale from table",
+               "Update record",
+               "Id of the item that was sold for the lowest price",
+               "Items sold between dates"]
 
-    pass
+    while True:
+        ui.print_menu("Sales menu", options, "Main menu")
+        option = input("Please enter a number: ")
+        if option == "1":
+            show_table()
+        elif option == "2":
+            add()
+        elif option == "3":
+            remove()
+        elif option == "4":
+            update()
+        elif option == "5":
+            get_lowest_price_item_id()
+        elif option == "6":
+            get_items_sold_between()
+        elif option == "0":
+            break
+        else:
+            raise KeyError("There is no such option.")
 
 
 def show_table(table):
@@ -46,7 +70,6 @@ def show_table(table):
 
     # your code
 
-    pass
 
 
 def add(table):
