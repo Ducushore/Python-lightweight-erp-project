@@ -25,10 +25,35 @@ def start_module():
     Returns:
         None
     """
+    table = data_manager.get_table_from_file("store/games_test.csv")
+    table_title = ["id", "title", "manufacturer", "price", "in_stock"]
 
-    # your code
+    list_options = ["Show table",
+                    "Add product",
+                    "Remove product",
+                    "Update table",
+                    "Get counts by manufacturers",
+                    "Get average by manufacturer"]
 
-    pass
+    while True:
+        ui.print_menu("Store manager menu", list_options, "Go back to Main menu")
+        option = input("Please enter a number: ")
+        if option == "1":
+            show_table(table)
+        elif option == "2":
+            table = add(table)
+        elif option == "3":
+            remove(table, "abcdef")
+        elif option == "4":
+            update(table, "abcdef")
+        elif option == "5":
+            get_lowest_price_item_id()
+        elif option == "6":
+            get_items_sold_between()
+        elif option == "0":
+            break
+        else:
+            raise KeyError("There is no such option.")
 
 
 def show_table(table):
@@ -41,10 +66,8 @@ def show_table(table):
     Returns:
         None
     """
-
-    # your code
-
-    pass
+    title_list = ["id", "title", "manufacturer", "price", "in_stock"]
+    ui.print_table(table, title_list)
 
 
 def add(table):
@@ -58,8 +81,10 @@ def add(table):
         Table with a new record
     """
 
-    # your code
-
+    list_labels = ["id: ", "title: ", "manufacturer: ", "price: ", "in_stock: "]
+    title = "Please provide product information"
+    table.append(ui.get_inputs(list_labels, title))
+    data_manager.write_table_to_file("store/games_test.csv", table)
     return table
 
 
@@ -75,8 +100,16 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    # your code
+    table_dict = {}                                 #tworzenie dict do modulu common, przydatne tam gdzie id_
+    for element in table:
+        table_dict[element[0][:5]] = element
 
+    if id_ in table_dict.keys():
+        del table_dict[id_]
+        table = table_dict.values()
+        data_manager.write_table_to_file("store/games_test.csv", table)
+    else:
+        ui.print_error_message("There is no such element.")
     return table
 
 
@@ -92,8 +125,18 @@ def update(table, id_):
         table with updated record
     """
 
-    # your code
+    table_dict = {}                                 #tworzenie dict do modulu common, przydatne tam gdzie id_
+    for element in table:
+        table_dict[element[0][:5]] = element
 
+    if id_ in table_dict.keys():
+        list_labels = ["id: ", "title: ", "manufacturer: ", "price: ", "in_stock: "]
+        title = "Please provide product information"
+        table_dict[id_] = ui.get_inputs(list_labels, title)
+        table = table_dict.values()
+        data_manager.write_table_to_file("store/games_test.csv", table)
+    else:
+        ui.print_error_message("There is no such element.")
     return table
 
 
