@@ -38,23 +38,24 @@ def start_module():
 
     while True:
         ui.print_menu("Sales menu", options, "Main menu")
-        option = input("Please enter a number: ")
-        if option == "1":
+        option = ui.get_inputs([""], "Please enter a number")
+        if option[0] == "1":
             show_table(table)
-        elif option == "2":
+        elif option[0] == "2":
             table = add(table)
-        elif option == "3":
-            remove()
-        elif option == "4":
+        elif option[0] == "3":
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = remove(table, id_)
+        elif option[0] == "4":
             update()
-        elif option == "5":
+        elif option[0] == "5":
             get_lowest_price_item_id()
-        elif option == "6":
+        elif option[0] == "6":
             get_items_sold_between()
-        elif option == "0":
+        elif option[0] == "0":
             break
         else:
-            raise KeyError("There is no such option.")
+            ui.print_error_message("There is no such option.")
 
 
 def show_table(table):
@@ -68,7 +69,7 @@ def show_table(table):
         None
     """
 
-    title_list = ["id", "title", "price", "month", "day", "year"]
+    title_list = ["ID", "Title", "Price", "Month", "Day", "Year"]
     ui.print_table(table, title_list)
 
 
@@ -84,8 +85,10 @@ def add(table):
     """
 
     list_labels = ["ID: ", "Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
-    new_item = ui.get_inputs(list_labels, "Please provide your personal information")
+    new_item = ui.get_inputs(list_labels, "Please provide information")
     table.append(new_item)
+    data_manager.write_table_to_file("sales/sales_test.csv", table)
+
     return table
 
 
@@ -100,9 +103,14 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
-
-    # your code
-
+    check = False
+    for element in table:
+        if element[0] == id_[0]:
+            table.remove(element)
+            data_manager.write_table_to_file("sales/sales_test.csv", table)
+            check = True
+    if not check:
+        ui.print_error_message("There is no such element.")
     return table
 
 
