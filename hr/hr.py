@@ -40,10 +40,10 @@ def start_module():
         if option[0] == "1":
             show_table(table)
         elif option[0] == "2":
-            add(table)
+            table = add(table)
         elif option[0] == "3":
             id_ = ui.get_inputs(['ID: '], "Please type ID to remove ")
-            remove(table, id_)
+            table = remove(table, id_)
         elif option[0] == "4":
             update(table, table[0])
         elif option[0] == "5":
@@ -80,7 +80,7 @@ def add(table):
     Returns:
         Table with a new record
     """
-    list_labels = ['ID: ', 'Name :', 'Birth date: ']
+    list_labels = ['ID: ', 'Name: ', 'Birth date: ']
     new_item = ui.get_inputs(list_labels, "Please provide personal information")
     table.append(new_item)
     data_manager.write_table_to_file("hr/persons_test.csv", table)
@@ -98,9 +98,14 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
-
-    # your code
-
+    check = False
+    for element in table:
+        if element[0] == id_[0]:
+            table.remove(element)
+            data_manager.write_table_to_file("hr/persons_test.csv", table)
+            check = True
+    if not check:
+        ui.print_error_message('There is no such element')
     return table
 
 
