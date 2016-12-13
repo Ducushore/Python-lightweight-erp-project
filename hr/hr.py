@@ -38,13 +38,13 @@ def start_module():
         ui.print_menu("HR menu", options, "Back to Main Menu")
         option = input("Please enter a number: ")
         if option == "1":
-            show_table()
+            show_table(table)
         elif option == "2":
             add(table)
         elif option == "3":
             remove(table)
         elif option == "4":
-            update()
+            update(table, table[0])
         elif option == "5":
             get_persons_closest_to_average()
         elif option == "6":
@@ -65,10 +65,8 @@ def show_table(table):
     Returns:
         None
     """
-
-    # your code
-
-    pass
+    title_list = ['ID', 'Name', 'Birth date']
+    ui.print_table(table, title_list)
 
 
 def add(table):
