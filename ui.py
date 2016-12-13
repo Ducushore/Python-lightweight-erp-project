@@ -1,5 +1,3 @@
-
-
 def print_table(table, title_list):
     """
     Prints table with data. Sample output:
@@ -19,9 +17,9 @@ def print_table(table, title_list):
         This function doesn't return anything it only prints to console.
     """
 
-    # your goes code
-
-    pass
+    print(title_list)
+    for i in table:
+        print(i)
 
 
 def print_result(result, label):
