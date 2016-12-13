@@ -34,7 +34,10 @@ def print_result(result, label):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
+    for position in result:
+        print(position)
+
+    print(label)
 
     pass
 
@@ -61,6 +64,12 @@ def print_menu(title, list_options, exit_message):
     """
 
     # your code
+    print (title + ':')
+    i = 1
+    for element in list_options:
+        print ('\t' + str([i])+ ' ' + element)
+        i += 1
+    print ('\t[0] ' + exit_message)
 
     pass
 
@@ -84,9 +93,13 @@ def get_inputs(list_labels, title):
         List of data given by the user. Sample return:
             [<user_input_1>, <user_input_2>, <user_input_3>]
     """
+
     inputs = []
 
-    # your code
+    print(title)
+    for element in list_labels:
+        x = input(element)
+        inputs.append(x)
 
     return inputs
 
@@ -105,6 +118,4 @@ def print_error_message(message):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
-
-    pass
+    print(message)
