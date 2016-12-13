@@ -27,18 +27,17 @@ def start_module():
     """
 
     # your code
-    table = data_manager.get_table_from_file("crm/customers.csv")
+    table = data_manager.get_table_from_file("crm/customers_test.csv")
     title = "Customer Relationship Management"
     list_options = ["Show Table", "Add to Table", "Remove from Table", "Update Table"]
     exit_message = "Go Back"
-    ui.print_menu(title, list_options, exit_message)
-    option = input("Please enter a number: ")
     while True:
         ui.print_menu(title, list_options, exit_message)
-        if option == "1":
+        option = ui.get_inputs([""], "Please enter a number")
+        if option[0] == "1":
             show_table(table)
-            # elif option == "2":
-            #     add()
+        elif option[0] == "2":
+            table = add(table)
             # elif option == "3":
             #     remove()
             # elif option == "4":
@@ -53,7 +52,7 @@ def start_module():
             break
         else:
             raise KeyError("There is no such option.")
-    pass
+
 
 def show_table(table):
     """
@@ -86,6 +85,10 @@ def add(table):
     """
 
     # your code
+    list_labels = ["ID", "Name", "E-Mail", "NL"]
+    new_item = ui.get_inputs(list_labels, "Please provide your personal information")
+    table.append(new_item)
+    data_manager.write_table_to_file("crm/customers_test.csv", table)
 
     return table
 
@@ -103,7 +106,7 @@ def remove(table, id_):
     """
 
     # your code
-    data_manager.get_table_from_file(table)
+    for element in table:
     return table
 
 
