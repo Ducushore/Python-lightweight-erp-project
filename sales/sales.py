@@ -40,7 +40,7 @@ def start_module():
         ui.print_menu("Sales menu", options, "Main menu")
         option = input("Please enter a number: ")
         if option == "1":
-            show_table()
+            show_table(table)
         elif option == "2":
             add()
         elif option == "3":
@@ -68,8 +68,8 @@ def show_table(table):
         None
     """
 
-    # your code
-
+    title_list = ["id", "title", "price", "month", "day", "year"]
+    ui.print_table(table, title_list)
 
 
 def add(table):
