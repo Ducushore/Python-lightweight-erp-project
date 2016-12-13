@@ -25,9 +25,34 @@ def start_module():
         None
     """
 
-    # your code
+    options = ["Display a table",
+               "Add new person",
+               "Remove person",
+               "Update information",
+               "Who is the oldest?",
+               "Who is closest to average age?",
+               ]
 
-    pass
+    table = data_manager.get_table_from_file("hr/persons.csv")
+    while True:
+        ui.print_menu("HR menu", options, "Back to Main Menu")
+        option = input("Please enter a number: ")
+        if option == "1":
+            show_table()
+        elif option == "2":
+            add(table)
+        elif option == "3":
+            remove(table)
+        elif option == "4":
+            update()
+        elif option == "5":
+            get_persons_closest_to_average()
+        elif option == "6":
+            get_persons_closest_to_average()
+        elif option == "0":
+            break
+        else:
+            raise KeyError("There is no such option.")
 
 
 def show_table(table):
