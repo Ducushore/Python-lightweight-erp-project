@@ -35,8 +35,8 @@ def generate_random(table):
         generated = index_list[0]
         generated = (''.join(random.choice(available[0:10]) for i in range(2)))
         generated = generated + (''.join(random.choice(available[10:36]) for i in range(2)))
-        generated = generated + (''.join(random.choice(available[37:63]) for i in range(2)))
-        generated = generated + (''.join(random.choice(available[64:]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[36:62]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[62:]) for i in range(2)))
 
     return generated
 
@@ -48,3 +48,50 @@ def creat_dict_from_table(table, id_):
     for element in table:
         table_dict[element[0]] = element
     return table_dict
+
+
+def validate_data(list_labels, to_validate):
+    if list_labels == ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]:
+        try:
+            float(to_validate[1])
+        except ValueError:
+            return False
+        try:
+            int(to_validate[2])
+        except ValueError:
+            return False
+        if int(to_validate[2]) >= 12 or int(to_validate[2]) <= 1:
+            return False
+        try:
+            int(to_validate[3])
+        except ValueError:
+            return False
+        if int(to_validate[3]) >= 31 or int(to_validate[3]) <= 1:
+            return False
+        try:
+            int(to_validate[4])
+        except ValueError:
+            return False
+        return True
+
+    elif list_labels = ['Name: ', 'Birth date: ']:
+        if to_validate[0].isalpha() or to_validate[0].isspace():
+            return True
+        else:
+            return False
+        try:
+            int(to_validate[1])
+        except ValueError:
+            return False
+        return True
+
+    elif list_labels = ["title: ", "manufacturer: ", "price: ", "in_stock: "]:
+        try:
+            int(to_validate[2])
+        except ValueError:
+            return False
+        try:
+            int(to_validate[3])
+        except ValueError:
+            return False
+        return True
