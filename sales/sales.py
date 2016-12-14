@@ -28,7 +28,7 @@ def start_module():
         None
     """
 
-    table = data_manager.get_table_from_file("sales/sales.csv")
+    table = data_manager.get_table_from_file("sales/sales_test.csv")
     options = ["Display a table",
                "Add sale to table",
                "Remove sale from table",
@@ -47,7 +47,8 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
             table = remove(table, id_)
         elif option[0] == "4":
-            update()
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = update(table, id_)
         elif option[0] == "5":
             get_lowest_price_item_id()
         elif option[0] == "6":
@@ -103,13 +104,13 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
-    check = False
-    for element in table:
-        if element[0] == id_[0]:
-            table.remove(element)
-            data_manager.write_table_to_file("sales/sales_test.csv", table)
-            check = True
-    if not check:
+    table_dict = common.creat_dict_from_table(table, id_)
+
+    if id_[0] in list(table_dict.keys()):
+        del table_dict[id_[0]]
+        table = table_dict.values()
+        data_manager.write_table_to_file("sales/sales_test.csv", table)
+    else:
         ui.print_error_message("There is no such element.")
     return table
 
@@ -126,8 +127,16 @@ def update(table, id_):
         table with updated record
     """
 
-    # your code
+    table_dict = common.creat_dict_from_table(table, id_)
 
+    if id_[0] in list(table_dict.keys()):
+        list_labels = ["ID: ", "Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
+        title = "Please provide product information"
+        table_dict[id_[0]] = ui.get_inputs(list_labels, title)
+        table = table_dict.values()
+        data_manager.write_table_to_file("store/games_test.csv", table)
+    else:
+        ui.print_error_message("There is no such element.")
     return table
 
 

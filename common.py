@@ -26,3 +26,12 @@ def generate_random(table):
     # your code
 
     return generated
+
+
+def creat_dict_from_table(table, id_):
+    """Creat dictionary from table according to given key"""
+
+    table_dict = {}
+    for element in table:
+        table_dict[element[0]] = element
+    return table_dict
