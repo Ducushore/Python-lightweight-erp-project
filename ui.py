@@ -34,10 +34,8 @@ def print_result(result, label):
         This function doesn't return anything it only prints to console.
     """
 
-    for position in result:
-        print(position)
-
-    print(label)
+    print("\n" + label)
+    print(result)
 
     pass
 
