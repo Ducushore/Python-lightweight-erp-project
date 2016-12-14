@@ -133,7 +133,18 @@ def update(table, id_):
     """
 
     # your code
+    table_dict = common.creat_dict_from_table(table, id_)
 
+    if id_[0] in list(table_dict.keys()):
+        list_labels = ["Id: ", "Name ", "E-mail: ", "NL: "]
+        title = "Please provide customer information"
+        table_dict[id_[0]] = ui.get_inputs(list_labels, title)
+        table = table_dict.values()
+        data_manager.write_table_to_file("store/games_test.csv", table)
+    else:
+        ui.print_error_message("There is no such element.")
+
+    return table
 # special functions:
 # ------------------
 
