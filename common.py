@@ -1,6 +1,7 @@
 # implement commonly used functions here
 
 import random
+import ui
 
 
 # generate and return a unique and random string
@@ -28,10 +29,15 @@ def generate_random(table):
     return generated
 
 
-def creat_dict_from_table(table, id_):
-    """Creat dictionary from table according to given key"""
+def creat_dict_from_table(table, item_key=0, start=None, end=None):
+    """Creat dictionary from table according to given key (int, position of a type in table)
+    and range (start, end as int, range of types in table) """
 
     table_dict = {}
-    for element in table:
-        table_dict[element[0]] = element
+    for item in table:
+        elements_to_add = item[start:end]
+        if item[item_key] in table_dict.keys():
+            table_dict[item[item_key]].extend(elements_to_add)
+        else:
+            table_dict[item[item_key]] = elements_to_add
     return table_dict

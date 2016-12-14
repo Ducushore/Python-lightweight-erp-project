@@ -49,9 +49,9 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
             table = update(table, id_)
         elif option[0] == "5":
-            get_lowest_price_item_id()
+            get_counts_by_manufacturers(table)
         elif option[0] == "6":
-            get_items_sold_between()
+            get_average_by_manufacturer(table)
         elif option[0] == "0":
             break
         else:
@@ -102,8 +102,7 @@ def remove(table, id_):
         Table without specified record.
     """
 
-
-    table_dict = common.creat_dict_from_table(table, id_)
+    table_dict = common.creat_dict_from_table(table)
 
     if id_[0] in list(table_dict.keys()):
         del table_dict[id_[0]]
@@ -126,7 +125,7 @@ def update(table, id_):
         table with updated record
     """
 
-    table_dict = common.creat_dict_from_table(table, id_)
+    table_dict = common.creat_dict_from_table(table)
 
     if id_[0] in list(table_dict.keys()):
         list_labels = ["id: ", "title: ", "manufacturer: ", "price: ", "in_stock: "]
@@ -146,9 +145,11 @@ def update(table, id_):
 # return type: a dictionary with this structure: { [manufacturer] : [count] }
 def get_counts_by_manufacturers(table):
 
-    # your code
-
-    pass
+    counts_dict = {}
+    table_dict = common.creat_dict_from_table(table, 2, 1, 2)
+    for k in table_dict:
+        counts_dict[k] = len(table_dict[k])
+    return counts_dict
 
 
 # the question: What is the average amount of games in stock of a given manufacturer?
