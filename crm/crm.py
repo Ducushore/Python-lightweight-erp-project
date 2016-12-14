@@ -29,7 +29,8 @@ def start_module():
     # your code
     table = data_manager.get_table_from_file("crm/customers_test.csv")
     title = "Customer Relationship Management"
-    list_options = ["Show Table", "Add to Table", "Remove from Table", "Update Table", "Show ID of longest name"]
+    list_options = ["Show Table", "Add to Table", "Remove from Table", "Update Table", "Show ID of longest name",
+                    "Show list of E-mail Subscribers"]
     exit_message = "Go Back"
     while True:
         ui.print_menu(title, list_options, exit_message)
@@ -46,8 +47,8 @@ def start_module():
             table = update(table, id_)
         elif option[0] == "5":
             table = get_longest_name_id(table)
-            # elif option == "6":
-            #     get_persons_closest_to_average()
+        elif option[0] == "6":
+            get_subscribed_emails(table)
             # elif option == "7":
             #     store.main()
         elif option == "0":
@@ -174,5 +175,10 @@ def get_longest_name_id(table):
 def get_subscribed_emails(table):
 
     # your code
-
-    pass
+    subs_mail = []
+    for line in table:
+        if line[-1] == "1":
+            subs_mail.append(str(line[2] + ";" + line[1]))
+        else:
+            continue
+    return subs_mail
