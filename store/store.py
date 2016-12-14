@@ -51,7 +51,8 @@ def start_module():
         elif option[0] == "5":
             get_counts_by_manufacturers(table)
         elif option[0] == "6":
-            get_average_by_manufacturer(table)
+            manufacturer = ui.get_inputs(["Manufacturer: "], "Please type manufacturer to get average")
+            get_average_by_manufacturer(table, manufacturer)
         elif option[0] == "0":
             break
         else:
@@ -156,6 +157,12 @@ def get_counts_by_manufacturers(table):
 # return type: number
 def get_average_by_manufacturer(table, manufacturer):
 
-    # your code
-
-    pass
+    table_dict = common.creat_dict_from_table(table, 2, 4)
+    print(table_dict)
+    if manufacturer[0] in table_dict:
+        in_stock = 0
+        for item in table_dict[manufacturer[0]]:
+            in_stock = in_stock + float(item)
+        return in_stock / len(table_dict[manufacturer[0]])
+    else:
+        ui.print_error_message("There is no such element.")
