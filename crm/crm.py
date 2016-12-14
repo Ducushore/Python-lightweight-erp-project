@@ -29,7 +29,7 @@ def start_module():
     # your code
     table = data_manager.get_table_from_file("crm/customers_test.csv")
     title = "Customer Relationship Management"
-    list_options = ["Show Table", "Add to Table", "Remove from Table", "Update Table"]
+    list_options = ["Show Table", "Add to Table", "Remove from Table", "Update Table", "Show ID of longest name"]
     exit_message = "Go Back"
     while True:
         ui.print_menu(title, list_options, exit_message)
@@ -38,12 +38,14 @@ def start_module():
             show_table(table)
         elif option[0] == "2":
             table = add(table)
-            # elif option == "3":
-            #     remove()
-            # elif option == "4":
-            #     update()
-            # elif option == "5":
-            #     get_persons_closest_to_average()
+        elif option[0] == "3":
+            id_ = ui.get_inputs("ID:", "Please, type ID you want to remove")
+            table = remove(table, id_)
+        elif option[0] == "4":
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = update(table, id_)
+        elif option[0] == "5":
+            table = get_longest_name_id(table)
             # elif option == "6":
             #     get_persons_closest_to_average()
             # elif option == "7":
@@ -52,6 +54,7 @@ def start_module():
             break
         else:
             raise KeyError("There is no such option.")
+
 
 
 def show_table(table):
@@ -92,7 +95,6 @@ def add(table):
 
     return table
 
-
 def remove(table, id_):
     """
     Remove a record with a given id from the table.
@@ -106,7 +108,15 @@ def remove(table, id_):
     """
 
     # your code
-    for element in table:
+    table_dict = common.creat_dict_from_table(table, id_)
+
+    if id_[0] in list(table_dict.keys()):
+        del table_dict[id_[0]]
+        table = table_dict.values()
+        data_manager.write_table_to_file("crm_test.csv", table)
+    else:
+        ui.print_error_message("There is no such element.")
+
     return table
 
 
@@ -124,9 +134,6 @@ def update(table, id_):
 
     # your code
 
-    return table
-
-
 # special functions:
 # ------------------
 
@@ -136,8 +143,6 @@ def update(table, id_):
 def get_longest_name_id(table):
 
     # your code
-
-    pass
 
 
 # the question: Which customers has subscribed to the newsletter?
