@@ -154,10 +154,23 @@ def update(table, id_):
 def get_longest_name_id(table):
 
     # your code
-
+    name = table[0][1]
+    character = str(table[0][1][0]).lower()
+    for element in table:
+        if len(element[1]) > len(name):
+            name = element[1]
+            id_ = element[0]
+            character = str(element[1][0]).lower()
+        elif len(element[1]) == len(name) and str(element[1][0]).lower() > character:
+            name = element[1]
+            id_ = element[0]
+            character = str(element[1][0]).lower()
+    return id_
 
 # the question: Which customers has subscribed to the newsletter?
 # return type: list of strings (where string is like email+separator+name, separator=";")
+
+
 def get_subscribed_emails(table):
 
     # your code
