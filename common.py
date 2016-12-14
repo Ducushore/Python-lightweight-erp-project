@@ -1,6 +1,7 @@
 # implement commonly used functions here
 
 import random
+import string
 
 
 # generate and return a unique and random string
@@ -21,9 +22,21 @@ def generate_random(table):
         Random and unique string
     """
 
-    generated = ''
+    index_list = []
+    for element in table:
+        index_list.append(element[0])
 
-    # your code
+    generated = index_list[0]
+    available = string.printable
+    available = available.replace(";", "")
+    available = available.replace(" \t\n\r\x0b\x0c", "")
+
+    while generated in index_list:
+        generated = index_list[0]
+        generated = (''.join(random.choice(available[0:10]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[10:36]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[37:63]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[64:]) for i in range(2)))
 
     return generated
 

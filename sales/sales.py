@@ -28,7 +28,7 @@ def start_module():
         None
     """
 
-    table = data_manager.get_table_from_file("sales/sales_test.csv")
+    table = data_manager.get_table_from_file("sales/sales.csv")
     options = ["Display a table",
                "Add sale to table",
                "Remove sale from table",
@@ -58,7 +58,7 @@ def start_module():
             month_to = ui.get_inputs([""], "Please type ending month: ")
             day_to = ui.get_inputs([""], "Please type ending day: ")
             year_to = ui.get_inputs([""], "Please type ending year: ")
-            filtered_table = get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
+            filtered_table = get_items_sold_between(table, month_from[0], day_from[0], year_from[0], month_to[0], day_to[0], year_to[0])
             title_list = ["ID", "Title", "Price", "Month", "Day", "Year"]
             ui.print_table(filtered_table, title_list)
         elif option[0] == "0":
@@ -93,10 +93,11 @@ def add(table):
         Table with a new record
     """
 
-    list_labels = ["ID: ", "Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
+    list_labels = ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
     new_item = ui.get_inputs(list_labels, "Please provide information")
+    new_item.insert(0, common.generate_random(table))
     table.append(new_item)
-    data_manager.write_table_to_file("sales/sales_test.csv", table)
+    data_manager.write_table_to_file("sales/sales.csv", table)
 
     return table
 
@@ -117,7 +118,7 @@ def remove(table, id_):
     if id_[0] in list(table_dict.keys()):
         del table_dict[id_[0]]
         table = table_dict.values()
-        data_manager.write_table_to_file("sales/sales_test.csv", table)
+        data_manager.write_table_to_file("sales/sales.csv", table)
     else:
         ui.print_error_message("There is no such element.")
     return table
@@ -142,7 +143,7 @@ def update(table, id_):
         title = "Please provide product information"
         table_dict[id_[0]] = ui.get_inputs(list_labels, title)
         table = table_dict.values()
-        data_manager.write_table_to_file("store/games_test.csv", table)
+        data_manager.write_table_to_file("store/games.csv", table)
     else:
         ui.print_error_message("There is no such element.")
     return table
@@ -184,16 +185,22 @@ def get_lowest_price_item_id(table):
 # return type: list of lists (the filtered table)
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
     filtered_table = []
+    month_from = str(month_from)
+    month_to = str(month_to)
+    day_from = str(day_from)
+    day_to = str(day_to)
+    year_from = str(year_from)
+    year_to = str(year_to)
     if len(month_to) == 1:
-        month_to[0] = "0" + month_to[0]
+        month_to = "0" + month_to
     if len(month_from) == 1:
-        month_from[0] = "0" + month_from[0]
+        month_from = "0" + month_from
     if len(day_to) == 1:
-        day_to[0] = "0" + day_to[0]
+        day_to = "0" + day_to
     if len(day_from) == 1:
-        day_from[0] = "0" + day_from[0]
-    from_number = int(year_from[0] + month_from[0] + day_from[0])
-    to_number = int(year_to[0] + month_to[0] + day_to[0])
+        day_from = "0" + day_from
+    from_number = int(year_from + month_from + day_from)
+    to_number = int(year_to + month_to + day_to)
 
     for element in table[:]:
         if len(element[3]) == 1:
@@ -202,7 +209,7 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
             element[4] = "0" + element[4]
         item_number = int(element[5] + element[3] + element[4])
 
-        if item_number >= from_number and item_number <= to_number:
+        if item_number == from_number and item_number == to_number:
             filtered_table.append(element)
 
     return filtered_table
