@@ -36,24 +36,25 @@ def start_module():
                     "Get average by manufacturer"]
 
     while True:
-        ui.print_menu("Store manager menu", list_options, "Go back to Main menu")
-        option = input("Please enter a number: ")
-        if option == "1":
+        ui.print_menu("Store manager menu", list_options, "Main menu")
+        option = ui.get_inputs([""], "Please enter a number")
+        if option[0] == "1":
             show_table(table)
-        elif option == "2":
+        elif option[0] == "2":
             table = add(table)
-        elif option == "3":
-            remove(table, "abcdef")
-        elif option == "4":
-            update(table, "abcdef")
-        elif option == "5":
+        elif option[0] == "3":
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = remove(table, id_)
+        elif option[0] == "4":
+            update()
+        elif option[0] == "5":
             get_lowest_price_item_id()
-        elif option == "6":
+        elif option[0] == "6":
             get_items_sold_between()
-        elif option == "0":
+        elif option[0] == "0":
             break
         else:
-            raise KeyError("There is no such option.")
+            ui.print_error_message("There is no such option.")
 
 
 def show_table(table):
@@ -102,10 +103,10 @@ def remove(table, id_):
 
     table_dict = {}                                 #tworzenie dict do modulu common, przydatne tam gdzie id_
     for element in table:
-        table_dict[element[0][:5]] = element
+        table_dict[element[0]] = element
 
-    if id_ in table_dict.keys():
-        del table_dict[id_]
+    if id_[0] in list(table_dict.keys()):
+        del table_dict[id_[0]]
         table = table_dict.values()
         data_manager.write_table_to_file("store/games_test.csv", table)
     else:
@@ -127,12 +128,12 @@ def update(table, id_):
 
     table_dict = {}                                 #tworzenie dict do modulu common, przydatne tam gdzie id_
     for element in table:
-        table_dict[element[0][:5]] = element
+        table_dict[element[0]] = element
 
-    if id_ in table_dict.keys():
+    if id_[0] in list(table_dict.keys()):
         list_labels = ["id: ", "title: ", "manufacturer: ", "price: ", "in_stock: "]
         title = "Please provide product information"
-        table_dict[id_] = ui.get_inputs(list_labels, title)
+        table_dict[id_[0]] = ui.get_inputs(list_labels, title)
         table = table_dict.values()
         data_manager.write_table_to_file("store/games_test.csv", table)
     else:
