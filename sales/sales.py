@@ -50,7 +50,7 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
             table = update(table, id_)
         elif option[0] == "5":
-            get_lowest_price_item_id()
+            ui.print_error_message(get_lowest_price_item_id(table))
         elif option[0] == "6":
             get_items_sold_between()
         elif option[0] == "0":
@@ -147,10 +147,29 @@ def update(table, id_):
 # return type: string (id)
 # if there are more than one with the lowest price, return the first by descending alphabetical order
 def get_lowest_price_item_id(table):
+    """
+    Provides info about item sold for lowest price.
 
-    # your code
+    Args:
+        table: list to look for item
 
-    pass
+    Returns:
+        ID of this item
+    """
+
+    price = int(table[0][2])
+    character = str(table[0][1][0]).lower()
+    for element in table:
+        if int(element[2]) < price:
+            price = int(element[2])
+            id_ = element[0]
+            character = str(element[1][0]).lower()
+        elif int(element[2]) == price and str(element[1][0]).lower() > character:
+            price = int(element[2])
+            id_ = element[0]
+            character = str(element[1][0]).lower()
+
+    return id_
 
 
 # the question: Which items are sold between two given dates ? (from_date < sale_date < to_date)
