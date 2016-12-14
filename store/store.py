@@ -46,7 +46,8 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
             table = remove(table, id_)
         elif option[0] == "4":
-            update()
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = update(table, id_)
         elif option[0] == "5":
             get_lowest_price_item_id()
         elif option[0] == "6":
@@ -101,9 +102,8 @@ def remove(table, id_):
         Table without specified record.
     """
 
-    table_dict = {}                                 #tworzenie dict do modulu common, przydatne tam gdzie id_
-    for element in table:
-        table_dict[element[0]] = element
+
+    table_dict = common.creat_dict_from_table(table, id_)
 
     if id_[0] in list(table_dict.keys()):
         del table_dict[id_[0]]
@@ -126,9 +126,7 @@ def update(table, id_):
         table with updated record
     """
 
-    table_dict = {}                                 #tworzenie dict do modulu common, przydatne tam gdzie id_
-    for element in table:
-        table_dict[element[0]] = element
+    table_dict = common.creat_dict_from_table(table, id_)
 
     if id_[0] in list(table_dict.keys()):
         list_labels = ["id: ", "title: ", "manufacturer: ", "price: ", "in_stock: "]
