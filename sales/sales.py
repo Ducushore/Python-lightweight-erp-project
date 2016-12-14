@@ -52,7 +52,15 @@ def start_module():
         elif option[0] == "5":
             ui.print_error_message(get_lowest_price_item_id(table))
         elif option[0] == "6":
-            get_items_sold_between()
+            month_from = ui.get_inputs([""], "Please type starting month: ")
+            day_from = ui.get_inputs([""], "Please type starting day: ")
+            year_from = ui.get_inputs([""], "Please type starting year: ")
+            month_to = ui.get_inputs([""], "Please type ending month: ")
+            day_to = ui.get_inputs([""], "Please type ending day: ")
+            year_to = ui.get_inputs([""], "Please type ending year: ")
+            filtered_table = get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
+            title_list = ["ID", "Title", "Price", "Month", "Day", "Year"]
+            ui.print_table(filtered_table, title_list)
         elif option[0] == "0":
             break
         else:
@@ -175,7 +183,26 @@ def get_lowest_price_item_id(table):
 # the question: Which items are sold between two given dates ? (from_date < sale_date < to_date)
 # return type: list of lists (the filtered table)
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
+    filtered_table = []
+    if len(month_to) == 1:
+        month_to[0] = "0" + month_to[0]
+    if len(month_from) == 1:
+        month_from[0] = "0" + month_from[0]
+    if len(day_to) == 1:
+        day_to[0] = "0" + day_to[0]
+    if len(day_from) == 1:
+        day_from[0] = "0" + day_from[0]
+    from_number = int(year_from[0] + month_from[0] + day_from[0])
+    to_number = int(year_to[0] + month_to[0] + day_to[0])
 
-    # your code
+    for element in table[:]:
+        if len(element[3]) == 1:
+            element[3] = "0" + element[3]
+        if len(element[4]) == 1:
+            element[4] = "0" + element[4]
+        item_number = int(element[5] + element[3] + element[4])
 
-    pass
+        if item_number >= from_number and item_number <= to_number:
+            filtered_table.append(element)
+
+    return filtered_table
