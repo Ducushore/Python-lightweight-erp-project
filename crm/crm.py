@@ -183,7 +183,11 @@ def update(table, id_):
                     id_ = ui.get_inputs(["Please type ID to update: "], "\n")
         else:
             ui.print_error_message("There is no such element.")
-
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
     return table
 # special functions:
 # ------------------
