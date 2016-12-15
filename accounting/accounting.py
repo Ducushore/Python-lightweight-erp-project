@@ -74,8 +74,6 @@ def show_table(table):
     title_list = ["ID", "Month", "Day", "Year", "Type", "Amount"]
     ui.print_table(table, title_list)
 
-    pass
-
 
 def add(table):
     """
@@ -88,8 +86,20 @@ def add(table):
         Table with a new record
     """
 
-    # your code
-
+    check = True
+    while check:
+        list_labels = ["Month: ", "Day: ", "Year: ", "Type: ", "Amount: "]
+        new_item = ui.get_inputs(list_labels, "Please provide information")
+        validation = common.validate_data(list_labels, new_item)
+        if not validation:
+            ui.print_error_message("Input not valid.\n")
+            continue
+        new_item.insert(0, common.generate_random(table))
+        table.append(new_item)
+        what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add another game.")
+        if what_to_do[0] == "0":
+            check = False
+    data_manager.write_table_to_file("accounting/items.csv", table)
     return table
 
 
