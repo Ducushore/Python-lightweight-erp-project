@@ -1,6 +1,7 @@
 # implement commonly used functions here
 import random
 import string
+import re
 # generate and return a unique and random string
 # other expectation:
 # - at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter
@@ -85,13 +86,14 @@ def validate_data(list_labels, to_validate):
         return True
     elif list_labels == ["Name", "E-Mail", "Newsletter"]:
         if to_validate[0].isalpha() or to_validate[0].isspace():
-            return True
+            pass
         else:
             return False
         match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', to_validate[1])
-        if match is False:
+        print(match)
+        if match == None:
             return False
-        if int(to_validate[2]) != 1 or int(to_validate[2]) != 2:
+        if to_validate[2] != "1" or to_validate[2] != "0":
             return False
         return True
     elif list_labels == ["month", "day", "year", "type", "amount"]:
