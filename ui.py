@@ -22,7 +22,7 @@ def print_table(table, title_list):
         print(i)
 
 
-def print_result(result, label):
+def print_result(result, label = ""):
     """
     Displays results of the special functions.
 
@@ -34,8 +34,7 @@ def print_result(result, label):
         This function doesn't return anything it only prints to console.
     """
 
-    for position in result:
-        print(position)
+    print(result)
 
     print(label)
 
@@ -118,4 +117,4 @@ def print_error_message(message):
         This function doesn't return anything it only prints to console.
     """
 
-    print(message)
+    print("\n" + message)

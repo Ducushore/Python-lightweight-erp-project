@@ -50,7 +50,7 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to update")
             table = update(table, id_)
         elif option[0] == "5":
-            ui.print_error_message(get_lowest_price_item_id(table))
+            ui.print_result(get_lowest_price_item_id(table))
         elif option[0] == "6":
             month_from = ui.get_inputs([""], "Please type starting month: ")[0]
             day_from = ui.get_inputs([""], "Please type starting day: ")[0]
@@ -96,13 +96,11 @@ def add(table):
     while check:
         list_labels = ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
         new_item = ui.get_inputs(list_labels, "Please provide information")
-        print(new_item)
         validation = common.validate_data(list_labels, new_item)
         if not validation:
             ui.print_error_message("Input not valid.\n")
             continue
         new_item.insert(0, common.generate_random(table))
-        print(new_item)
         table.append(new_item)
         what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add another game.")
         if what_to_do[0] == "0":
@@ -169,7 +167,6 @@ def update(table, id_):
                 continue
             updated_item.insert(0, id_[0])
             table_dict[id_[0]] = updated_item
-            print(table_dict.values())
             table = list(table_dict.values())
             data_manager.write_table_to_file("store/games.csv", table)
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
@@ -246,8 +243,12 @@ def get_items_sold_between(table, month_from, day_from, year_from, month_to, day
         if len(element[4]) == 1:
             element[4] = "0" + element[4]
         item_number = int(element[5] + element[3] + element[4])
-
-        if item_number == from_number and item_number == to_number:
+        if item_number > from_number and item_number < to_number:
             filtered_table.append(element)
 
+    for i in range(len(filtered_table)):
+        filtered_table[i][2] = int(filtered_table[i][2])
+        filtered_table[i][3] = int(filtered_table[i][3])
+        filtered_table[i][4] = int(filtered_table[i][4])
+        filtered_table[i][5] = int(filtered_table[i][5])
     return filtered_table
