@@ -28,9 +28,36 @@ def start_module():
         None
     """
 
-    # you code
+    table = data_manager.get_table_from_file("accounting/items.csv")
+    options = ["Display a table",
+               "Add record to table",
+               "Remove record from table",
+               "Update record",
+               "Which year max",
+               "Average amount per year"]
 
-    pass
+    while True:
+        ui.print_menu("Accounting menu", options, "Main menu")
+        option = ui.get_inputs([""], "Please enter a number: ")
+        if option[0] == "1":
+            show_table(table)
+        elif option[0] == "2":
+            table = add(table)
+        elif option[0] == "3":
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = remove(table, id_)
+        elif option[0] == "4":
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = update(table, id_)
+        elif option[0] == "5":
+            which_year_max(table)
+        elif option[0] == "6":
+            year = ui.get_inputs(["Year: "], "Please enter year: ")
+            avg_amount(table, year[0])
+        elif option[0] == "0":
+            break
+        else:
+            ui.print_error_message("There is no such option.")
 
 
 def show_table(table):
