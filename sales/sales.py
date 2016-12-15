@@ -126,7 +126,7 @@ def remove(table, id_):
         table_dict = common.creat_dict_from_table(table)
         if id_[0] in list(table_dict.keys()):
             del table_dict[id_[0]]
-            table = table_dict.values()
+            table = list(table_dict.values())
             data_manager.write_table_to_file("sales/sales.csv", table)
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to remove another game.")
             if what_to_do[0] == '0':
