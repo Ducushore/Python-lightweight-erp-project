@@ -17,13 +17,43 @@ def print_table(table, title_list):
         This function doesn't return anything it only prints to console.
     """
 
-    print(title_list)
-    for i in table:
-        print(i)
+    column_width = list()
+
+    for i, title in enumerate(title_list):
+        column_width.append(len(title))
+
+    for items in table:
+        for i, item in enumerate(items):
+            try:
+                if column_width[i] < len(str(item)):
+                    column_width[i] = len(str(item))
+            except:
+                column_width.append(len(item))
+
+    table_size = 1
+    for dash in column_width:
+        table_size += (dash + 3)
+
+    print('/', ('-' * (table_size-2)), '\\', sep='')
+
+    for i, title in enumerate(title_list):
+        if i == 0:
+            print('|', end="")
+        print(' {:{width}} |'.format(title, width=column_width[i]), end="")
+
+    print('\n' + '|' + ('-' * (table_size-2)) + '|')
+
+    for items in table:
+        for i, item in enumerate(items):
+            if i == 0:
+                print('|', end="")
+            print(' {:{width}} |'.format(str(item).replace('\|\|/', ';'), width=column_width[i]), end="")
+        print()
+
+    print('\\' + ('-' * (table_size-2)) + '/')
 
 
 def print_result(result, label=""):
-
     """
     Displays results of the special functions.
 
