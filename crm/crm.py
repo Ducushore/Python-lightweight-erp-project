@@ -199,7 +199,7 @@ def get_longest_name_id(table):
             name = element[1]
             id_ = element[0]
             character = str(element[1][0]).lower()
-        elif len(element[1]) == len(name) and str(element[1][0]).lower() > character:
+        elif len(element[1]) == len(name) and str(element[1][0]).lower() < character:
             name = element[1]
             id_ = element[0]
             character = str(element[1][0]).lower()
