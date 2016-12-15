@@ -52,7 +52,8 @@ def start_module():
             ui.print_result(get_counts_by_manufacturers(table), "Counts by Manufacturer:")
         elif option[0] == "6":
             manufacturer = ui.get_inputs(["Manufacturer: "], "Please type manufacturer to get average")[0]
-            ui.print_result(get_average_by_manufacturer(table, manufacturer), "Average by Manufacturer:")
+            result = get_average_by_manufacturer(table, manufacturer)
+            ui.print_result(result, "Average amounts of products made by %s:" %manufacturer)
         elif option[0] == "0":
             break
         else:
@@ -84,10 +85,10 @@ def add(table):
     Returns:
         Table with a new record
     """
-
+    list_labels = ["title: ", "manufacturer: ", "price: ", "in_stock: "]
     check = True
     while check:
-        new_product = ui.get_inputs(["Title: ", "Manufacturer: ", "Price: ", "In Stock: "], "Please provide information")
+        new_product = ui.get_inputs(list_labels, "Please provide product information")
         validation = common.validate_data(["title: ", "manufacturer: ", "price: ", "in_stock: "], new_product)
         if not validation:
             ui.print_error_message("Input not valid.\n")
@@ -142,13 +143,16 @@ def update(table, id_):
         table with updated record
     """
 
+    list_labels = ["title: ", "manufacturer: ", "price: ", "in_stock: "]
     check = True
     while check:
         table_dict = common.creat_dict_from_table(table)
         if id_ in list(table_dict.keys()):
-            list_labels = ["title: ", "manufacturer: ", "price: ", "in_stock: "]
-            title = "Please provide product information"
-            updated_product = ui.get_inputs(list_labels, title)
+            updated_product = ui.get_inputs(list_labels, "Please provide product information")
+            validation = common.validate_data(list_labels, updated_product)
+            if not validation:
+                ui.print_error_message("Input not valid.\n")
+                continue
             updated_product.insert(0, table_dict[id_][0])
             table_dict[id_] = updated_product
             table = list(table_dict.values())
