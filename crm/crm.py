@@ -46,11 +46,10 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
             table = update(table, id_)
         elif option[0] == "5":
-            table = get_longest_name_id(table)
+            ui.print_result(get_longest_name_id(table), "The ID with longest name is: ")
         elif option[0] == "6":
-            get_subscribed_emails(table)
-            # elif option == "7":
-            #     store.main()
+            ui.print_result(get_subscribed_emails(table), "People with e-mail subscriptions are: ")
+
         elif option == "0":
             break
         else:
@@ -89,9 +88,15 @@ def add(table):
     """
 
     # your code
-    list_labels = ["ID", "Name", "E-Mail", "NL"]
-    new_item = ui.get_inputs(list_labels, "Please provide your personal information")
-    table.append(new_item)
+    check = True
+    while check:
+
+        list_labels = ["ID", "Name", "E-Mail", "Newsletter"]
+        new_item = ui.get_inputs(list_labels, "Please provide your personal information")
+        table.append(new_item)
+        what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add record.")
+        if what_to_do[0] == "0":
+            check = False
     data_manager.write_table_to_file("crm/customers_test.csv", table)
 
     return table
@@ -109,15 +114,28 @@ def remove(table, id_):
     """
 
     # your code
+    check = True
+    while check:
+
+
     table_dict = common.creat_dict_from_table(table, id_)
 
     if id_[0] in list(table_dict.keys()):
         del table_dict[id_[0]]
         table = table_dict.values()
         data_manager.write_table_to_file("crm_test.csv", table)
+        what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to remove another information.")
+        if what_to_do[0] == '0':
+                check = False
+        else:
+            id_ = ui.get_inputs(["Please type ID to remove: "], "\n")
     else:
         ui.print_error_message("There is no such element.")
-
+        what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+        if what_to_do[0] == '0':
+            check = False
+        else:
+            id_ = ui.get_inputs(['Please type ID to remove: '], "\n")
     return table
 
 
@@ -134,16 +152,28 @@ def update(table, id_):
     """
 
     # your code
-    table_dict = common.creat_dict_from_table(table, id_)
+    check = True
+    while check:
+        table_dict = common.creat_dict_from_table(table, id_)
 
-    if id_[0] in list(table_dict.keys()):
-        list_labels = ["Id: ", "Name ", "E-mail: ", "NL: "]
-        title = "Please provide customer information"
-        table_dict[id_[0]] = ui.get_inputs(list_labels, title)
-        table = table_dict.values()
-        data_manager.write_table_to_file("store/games_test.csv", table)
-    else:
-        ui.print_error_message("There is no such element.")
+        if id_[0] in list(table_dict.keys()):
+            list_labels = ["Id: ", "Name ", "E-mail: ", "NL: "]
+            title = "Please provide customer information"
+            table_dict[id_[0]] = ui.get_inputs(list_labels, title)
+            table = table_dict.values()
+            data_manager.write_table_to_file("store/games_test.csv", table)
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+                what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+                if what_to_do[0] == '0':
+                    check = False
+                else:
+                    id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+        else:
+            ui.print_error_message("There is no such element.")
 
     return table
 # special functions:
