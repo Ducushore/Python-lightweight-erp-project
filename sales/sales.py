@@ -28,9 +28,43 @@ def start_module():
         None
     """
 
-    # your code
+    table = data_manager.get_table_from_file("sales/sales.csv")
+    options = ["Display a table",
+               "Add sale to table",
+               "Remove sale from table",
+               "Update record",
+               "Id of the item that was sold for the lowest price",
+               "Items sold between dates"]
 
-    pass
+    while True:
+        ui.print_menu("Sales menu", options, "Main menu")
+        option = ui.get_inputs([""], "Please enter a number")
+        if option[0] == "1":
+            show_table(table)
+        elif option[0] == "2":
+            table = add(table)
+        elif option[0] == "3":
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            table = remove(table, id_)
+        elif option[0] == "4":
+            id_ = ui.get_inputs(["ID: "], "Please type ID to update")
+            table = update(table, id_)
+        elif option[0] == "5":
+            ui.print_result(get_lowest_price_item_id(table))
+        elif option[0] == "6":
+            month_from = ui.get_inputs([""], "Please type starting month: ")[0]
+            day_from = ui.get_inputs([""], "Please type starting day: ")[0]
+            year_from = ui.get_inputs([""], "Please type starting year: ")[0]
+            month_to = ui.get_inputs([""], "Please type ending month: ")[0]
+            day_to = ui.get_inputs([""], "Please type ending day: ")[0]
+            year_to = ui.get_inputs([""], "Please type ending year: ")[0]
+            filtered_table = get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
+            title_list = ["ID", "Title", "Price", "Month", "Day", "Year"]
+            ui.print_table(filtered_table, title_list)
+        elif option[0] == "0":
+            break
+        else:
+            ui.print_error_message("There is no such option.")
 
 
 def show_table(table):
@@ -44,9 +78,8 @@ def show_table(table):
         None
     """
 
-    # your code
-
-    pass
+    title_list = ["ID", "Title", "Price", "Month", "Day", "Year"]
+    ui.print_table(table, title_list)
 
 
 def add(table):
@@ -59,8 +92,20 @@ def add(table):
     Returns:
         Table with a new record
     """
-
-    # your code
+    check = True
+    while check:
+        list_labels = ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
+        new_item = ui.get_inputs(list_labels, "Please provide information")
+        validation = common.validate_data(list_labels, new_item)
+        if not validation:
+            ui.print_error_message("Input not valid.\n")
+            continue
+        new_item.insert(0, common.generate_random(table))
+        table.append(new_item)
+        what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add another game.")
+        if what_to_do[0] == "0":
+            check = False
+    data_manager.write_table_to_file("sales/sales.csv", table)
 
     return table
 
@@ -76,9 +121,25 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
-
-    # your code
-
+    check = True
+    while check:
+        table_dict = common.creat_dict_from_table(table)
+        if id_[0] in list(table_dict.keys()):
+            del table_dict[id_[0]]
+            table = list(table_dict.values())
+            data_manager.write_table_to_file("sales/sales.csv", table)
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to remove another game.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to remove: "], "\n")
+        else:
+            ui.print_error_message("There is no such element.\n")
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(['Please type ID to remove: '], "\n")
     return table
 
 
@@ -93,9 +154,33 @@ def update(table, id_):
     Returns:
         table with updated record
     """
+    check = True
+    while check:
+        table_dict = common.creat_dict_from_table(table)
 
-    # your code
-
+        if id_[0] in list(table_dict.keys()):
+            list_labels = ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
+            updated_item = ui.get_inputs(list_labels, "Please provide product information")
+            validation = common.validate_data(list_labels, updated_item)
+            if not validation:
+                ui.print_error_message("Input not valid.\n")
+                continue
+            updated_item.insert(0, id_[0])
+            table_dict[id_[0]] = updated_item
+            table = list(table_dict.values())
+            data_manager.write_table_to_file("store/games.csv", table)
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+        else:
+            ui.print_error_message("There is no such element.\n")
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
     return table
 
 
@@ -106,16 +191,64 @@ def update(table, id_):
 # return type: string (id)
 # if there are more than one with the lowest price, return the first by descending alphabetical order
 def get_lowest_price_item_id(table):
+    """
+    Provides info about item sold for lowest price.
 
-    # your code
+    Args:
+        table: list to look for item
 
-    pass
+    Returns:
+        ID of this item
+    """
+
+    price = int(table[0][2])
+    character = str(table[0][1][0]).lower()
+    for element in table:
+        if int(element[2]) < price:
+            price = int(element[2])
+            id_ = element[0]
+            character = str(element[1][0]).lower()
+        elif int(element[2]) == price and str(element[1][0]).lower() > character:
+            price = int(element[2])
+            id_ = element[0]
+            character = str(element[1][0]).lower()
+
+    return id_
 
 
 # the question: Which items are sold between two given dates ? (from_date < sale_date < to_date)
 # return type: list of lists (the filtered table)
 def get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to):
+    filtered_table = []
+    month_from = str(month_from)
+    month_to = str(month_to)
+    day_from = str(day_from)
+    day_to = str(day_to)
+    year_from = str(year_from)
+    year_to = str(year_to)
+    if len(month_to) == 1:
+        month_to = "0" + month_to
+    if len(month_from) == 1:
+        month_from = "0" + month_from
+    if len(day_to) == 1:
+        day_to = "0" + day_to
+    if len(day_from) == 1:
+        day_from = "0" + day_from
+    from_number = int(year_from + month_from + day_from)
+    to_number = int(year_to + month_to + day_to)
 
-    # your code
+    for element in table[:]:
+        if len(element[3]) == 1:
+            element[3] = "0" + element[3]
+        if len(element[4]) == 1:
+            element[4] = "0" + element[4]
+        item_number = int(element[5] + element[3] + element[4])
+        if item_number > from_number and item_number < to_number:
+            filtered_table.append(element)
 
-    pass
+    for i in range(len(filtered_table)):
+        filtered_table[i][2] = int(filtered_table[i][2])
+        filtered_table[i][3] = int(filtered_table[i][3])
+        filtered_table[i][4] = int(filtered_table[i][4])
+        filtered_table[i][5] = int(filtered_table[i][5])
+    return filtered_table

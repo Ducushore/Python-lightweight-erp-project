@@ -23,6 +23,7 @@ def print_table(table, title_list):
 
 
 def print_result(result, label=""):
+
     """
     Displays results of the special functions.
 
@@ -33,18 +34,11 @@ def print_result(result, label=""):
     Returns:
         This function doesn't return anything it only prints to console.
     """
-<<<<<<< HEAD
 
     for position in result:
         print(position)
 
     print(label)
-=======
-    print (result)
-    # your code
->>>>>>> hr
-
-    pass
 
 
 def print_menu(title, list_options, exit_message):
@@ -72,7 +66,7 @@ def print_menu(title, list_options, exit_message):
     print (title + ':')
     i = 1
     for element in list_options:
-        print ('\t' + str([i])+ ' ' + element)
+        print ('\t' + str([i]) + ' ' + element)
         i += 1
     print ('\t[0] ' + exit_message)
 
@@ -123,4 +117,4 @@ def print_error_message(message):
         This function doesn't return anything it only prints to console.
     """
 
-    print(message)
+    print("\n" + message)
