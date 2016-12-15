@@ -91,8 +91,13 @@ def add(table):
     check = True
     while check:
 
-        list_labels = ["ID", "Name", "E-Mail", "Newsletter"]
+        list_labels = ["Name", "E-Mail", "Newsletter"]
         new_item = ui.get_inputs(list_labels, "Please provide your personal information")
+        validation = common.validate_data(list_labels, new_item)
+        if not validation:
+            ui.print_error_message("Input not valid.\n")
+            continue
+        new_item.insert(0, common.generate_random(table))
         table.append(new_item)
         what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add record.")
         if what_to_do[0] == "0":
@@ -160,6 +165,10 @@ def update(table, id_):
             list_labels = ["Id: ", "Name ", "E-mail: ", "NL: "]
             title = "Please provide customer information"
             table_dict[id_[0]] = ui.get_inputs(list_labels, title)
+            validation = common.validate_data(list_labels, table_dict[id_[0]])
+            if not validation:
+                ui.print_error_message("Input not valid.\n")
+                continue
             table = table_dict.values()
             data_manager.write_table_to_file("store/games_test.csv", table)
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
