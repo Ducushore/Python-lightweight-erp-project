@@ -1,7 +1,7 @@
 # implement commonly used functions here
 
 import random
-import ui
+import string
 
 
 # generate and return a unique and random string
@@ -24,7 +24,19 @@ def generate_random(table):
 
     generated = ''
 
-    # your code
+    index_list = []
+    for element in table:
+        index_list.append(element[0])
+    generated = index_list[0]
+    available = string.printable
+    available = available.replace(";", "")
+    available = available.replace(" \t\n\r\x0b\x0c", "")
+    while generated in index_list:
+        generated = index_list[0]
+        generated = (''.join(random.choice(available[0:10]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[10:36]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[36:62]) for i in range(2)))
+        generated = generated + (''.join(random.choice(available[62:]) for i in range(2)))
 
     return generated
 
@@ -41,3 +53,48 @@ def creat_dict_from_table(table, item_key=0, start=None, end=None):
         else:
             table_dict[item[item_key]] = elements_to_add
     return table_dict
+
+
+def validate_data(list_labels, to_validate):
+    if list_labels == ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]:
+        try:
+            float(to_validate[1])
+        except ValueError:
+            return False
+        try:
+            int(to_validate[2])
+        except ValueError:
+            return False
+        if int(to_validate[2]) >= 12 or int(to_validate[2]) <= 1:
+            return False
+        try:
+            int(to_validate[3])
+        except ValueError:
+            return False
+        if int(to_validate[3]) >= 31 or int(to_validate[3]) <= 1:
+            return False
+        try:
+            int(to_validate[4])
+        except ValueError:
+            return False
+        return True
+    elif list_labels == ['Name: ', 'Birth date: ']:
+        if to_validate[0].isalpha() or to_validate[0].isspace():
+            return True
+        else:
+            return False
+        try:
+            int(to_validate[1])
+        except ValueError:
+            return False
+        return True
+    elif list_labels == ["title: ", "manufacturer: ", "price: ", "in_stock: "]:
+        try:
+            int(to_validate[2])
+        except ValueError:
+            return False
+        try:
+            int(to_validate[3])
+        except ValueError:
+            return False
+        return True

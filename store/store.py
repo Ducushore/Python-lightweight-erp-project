@@ -43,15 +43,15 @@ def start_module():
         elif option[0] == "2":
             table = add(table)
         elif option[0] == "3":
-            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")[0]
             table = remove(table, id_)
         elif option[0] == "4":
-            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")[0]
             table = update(table, id_)
         elif option[0] == "5":
             get_counts_by_manufacturers(table)
         elif option[0] == "6":
-            manufacturer = ui.get_inputs(["Manufacturer: "], "Please type manufacturer to get average")
+            manufacturer = ui.get_inputs(["Manufacturer: "], "Please type manufacturer to get average")[0]
             get_average_by_manufacturer(table, manufacturer)
         elif option[0] == "0":
             break
@@ -84,9 +84,11 @@ def add(table):
         Table with a new record
     """
 
-    list_labels = ["id: ", "title: ", "manufacturer: ", "price: ", "in_stock: "]
+    list_labels = ["title: ", "manufacturer: ", "price: ", "in_stock: "]
     title = "Please provide product information"
-    table.append(ui.get_inputs(list_labels, title))
+    new_product = ui.get_inputs(list_labels, title)
+    new_product.insert(0, common.generate_random(table))
+    table.append(new_product)
     data_manager.write_table_to_file("store/games_test.csv", table)
     return table
 
@@ -105,9 +107,9 @@ def remove(table, id_):
 
     table_dict = common.creat_dict_from_table(table)
 
-    if id_[0] in list(table_dict.keys()):
-        del table_dict[id_[0]]
-        table = table_dict.values()
+    if id_ in list(table_dict.keys()):
+        del table_dict[id_]
+        table = list(table_dict.values())
         data_manager.write_table_to_file("store/games_test.csv", table)
     else:
         ui.print_error_message("There is no such element.")
@@ -128,11 +130,13 @@ def update(table, id_):
 
     table_dict = common.creat_dict_from_table(table)
 
-    if id_[0] in list(table_dict.keys()):
-        list_labels = ["id: ", "title: ", "manufacturer: ", "price: ", "in_stock: "]
+    if id_ in list(table_dict.keys()):
+        list_labels = ["title: ", "manufacturer: ", "price: ", "in_stock: "]
         title = "Please provide product information"
-        table_dict[id_[0]] = ui.get_inputs(list_labels, title)
-        table = table_dict.values()
+        updated_product = ui.get_inputs(list_labels, title)
+        updated_product.insert(0, table_dict[id_][0])
+        table_dict[id_] = updated_product
+        table = list(table_dict.values())
         data_manager.write_table_to_file("store/games_test.csv", table)
     else:
         ui.print_error_message("There is no such element.")
@@ -159,10 +163,10 @@ def get_average_by_manufacturer(table, manufacturer):
 
     table_dict = common.creat_dict_from_table(table, 2, 4)
     print(table_dict)
-    if manufacturer[0] in table_dict:
+    if manufacturer in table_dict:
         in_stock = 0
-        for item in table_dict[manufacturer[0]]:
+        for item in table_dict[manufacturer]:
             in_stock = in_stock + float(item)
-        return in_stock / len(table_dict[manufacturer[0]])
+        return in_stock / len(table_dict[manufacturer])
     else:
         ui.print_error_message("There is no such element.")
