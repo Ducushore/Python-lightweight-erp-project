@@ -35,10 +35,15 @@ def print_result(result, label=""):
         This function doesn't return anything it only prints to console.
     """
 
-    for position in result:
-        print(position)
-
-    print(label)
+    print("\n" + label)
+    if type(result) == list and len(result) > 1:
+        print("")
+        for element in result:
+            print(element)
+        print("")
+    else:
+        print(result)
+        print("")
 
 
 def print_menu(title, list_options, exit_message):
