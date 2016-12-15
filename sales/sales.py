@@ -47,18 +47,18 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
             table = remove(table, id_)
         elif option[0] == "4":
-            id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
+            id_ = ui.get_inputs(["ID: "], "Please type ID to update")
             table = update(table, id_)
         elif option[0] == "5":
             ui.print_error_message(get_lowest_price_item_id(table))
         elif option[0] == "6":
-            month_from = ui.get_inputs([""], "Please type starting month: ")
-            day_from = ui.get_inputs([""], "Please type starting day: ")
-            year_from = ui.get_inputs([""], "Please type starting year: ")
-            month_to = ui.get_inputs([""], "Please type ending month: ")
-            day_to = ui.get_inputs([""], "Please type ending day: ")
-            year_to = ui.get_inputs([""], "Please type ending year: ")
-            filtered_table = get_items_sold_between(table, month_from[0], day_from[0], year_from[0], month_to[0], day_to[0], year_to[0])
+            month_from = ui.get_inputs([""], "Please type starting month: ")[0]
+            day_from = ui.get_inputs([""], "Please type starting day: ")[0]
+            year_from = ui.get_inputs([""], "Please type starting year: ")[0]
+            month_to = ui.get_inputs([""], "Please type ending month: ")[0]
+            day_to = ui.get_inputs([""], "Please type ending day: ")[0]
+            year_to = ui.get_inputs([""], "Please type ending year: ")[0]
+            filtered_table = get_items_sold_between(table, month_from, day_from, year_from, month_to, day_to, year_to)
             title_list = ["ID", "Title", "Price", "Month", "Day", "Year"]
             ui.print_table(filtered_table, title_list)
         elif option[0] == "0":
@@ -96,11 +96,13 @@ def add(table):
     while check:
         list_labels = ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
         new_item = ui.get_inputs(list_labels, "Please provide information")
+        print(new_item)
         validation = common.validate_data(list_labels, new_item)
         if not validation:
             ui.print_error_message("Input not valid.\n")
             continue
         new_item.insert(0, common.generate_random(table))
+        print(new_item)
         table.append(new_item)
         what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add another game.")
         if what_to_do[0] == "0":
@@ -123,7 +125,7 @@ def remove(table, id_):
     """
     check = True
     while check:
-        table_dict = common.creat_dict_from_table(table, id_)
+        table_dict = common.creat_dict_from_table(table)
         if id_[0] in list(table_dict.keys()):
             del table_dict[id_[0]]
             table = table_dict.values()
@@ -156,16 +158,19 @@ def update(table, id_):
     """
     check = True
     while check:
-        table_dict = common.creat_dict_from_table(table, id_)
+        table_dict = common.creat_dict_from_table(table)
 
         if id_[0] in list(table_dict.keys()):
-            list_labels = ["ID: ", "Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
-            table_dict[id_[0]] = ui.get_inputs(list_labels, "Please provide product information")
-            validation = common.validate_data(list_labels, table_dict[id_[0]])
+            list_labels = ["Title: ", "Price: ", "Month: ", "Day: ", "Year:"]
+            updated_item = ui.get_inputs(list_labels, "Please provide product information")
+            validation = common.validate_data(list_labels, updated_item)
             if not validation:
                 ui.print_error_message("Input not valid.\n")
                 continue
-            table = table_dict.values()
+            updated_item.insert(0, id_[0])
+            table_dict[id_[0]] = updated_item
+            print(table_dict.values())
+            table = list(table_dict.values())
             data_manager.write_table_to_file("store/games.csv", table)
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
             if what_to_do[0] == '0':
