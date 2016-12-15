@@ -34,11 +34,8 @@ def print_result(result, label = ""):
         This function doesn't return anything it only prints to console.
     """
 
+    print("\n" + label)
     print(result)
-
-    print(label)
-
-    pass
 
 
 def print_menu(title, list_options, exit_message):

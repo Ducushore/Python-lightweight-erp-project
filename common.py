@@ -1,8 +1,6 @@
 # implement commonly used functions here
-
 import random
 import string
-
 
 # generate and return a unique and random string
 # other expectation:
@@ -11,13 +9,13 @@ import string
 #
 # @table: list of lists
 # @generated: string - randomly generated string (unique in the @table)
+
+
 def generate_random(table):
     """
     Generates random and unique string. Used for id/key generation.
-
     Args:
         table: list containing keys. Generated string should be different then all of them
-
     Returns:
         Random and unique string
     """
@@ -77,7 +75,6 @@ def validate_data(list_labels, to_validate):
         except ValueError:
             return False
         return True
-
     elif list_labels == ['Name: ', 'Birth date: ']:
         if to_validate[0].isalpha() or to_validate[0].isspace():
             return True
@@ -88,7 +85,6 @@ def validate_data(list_labels, to_validate):
         except ValueError:
             return False
         return True
-
     elif list_labels == ["title: ", "manufacturer: ", "price: ", "in_stock: "]:
         try:
             int(to_validate[2])
@@ -99,22 +95,17 @@ def validate_data(list_labels, to_validate):
         except ValueError:
             return False
         return True
-
     elif list_labels == ["Name", "E-Mail", "Newsletter"]:
         if to_validate[0].isalpha() or to_validate[0].isspace():
             return True
         else:
             return False
-
         match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', to_validate[1])
         if match is False:
             return False
-
         if int(to_validate[2]) != 1 or int(to_validate[2]) != 2:
             return False
-
         return True
-
     elif list_labels == ["month", "day", "year", "type", "amount"]:
         try:
             int(to_validate[0])
@@ -134,5 +125,4 @@ def validate_data(list_labels, to_validate):
             return False
         if to_validate[3] != "income" or to_validate[3] != "outcome":
             return False
-
         return True
