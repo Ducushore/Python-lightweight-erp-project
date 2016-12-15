@@ -51,7 +51,7 @@ def start_module():
         elif option[0] == "5":
             ui.print_result(get_counts_by_manufacturers(table), "Counts by Manufacturer:")
         elif option[0] == "6":
-            manufacturer = ui.get_inputs(["Manufacturer: "], "Please type manufacturer to get average")[0]
+            manufacturer = ui.get_inputs(["Manufacturer: "], "Please type Manufacturer name to get average")[0]
             result = get_average_by_manufacturer(table, manufacturer)
             ui.print_result(result, "Average amounts of products made by %s:" %manufacturer)
         elif option[0] == "0":
