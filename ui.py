@@ -35,7 +35,14 @@ def print_result(result, label=""):
     """
 
     print("\n" + label)
-    print(result)
+    if type(result) == list and len(result) > 1:
+        print("")
+        for element in result:
+            print(element)
+        print("")
+    else:
+        print(result)
+        print("")
 
 
 def print_menu(title, list_options, exit_message):
@@ -63,7 +70,7 @@ def print_menu(title, list_options, exit_message):
     print (title + ':')
     i = 1
     for element in list_options:
-        print ('\t' + str([i])+ ' ' + element)
+        print ('\t' + str([i]) + ' ' + element)
         i += 1
     print ('\t[0] ' + exit_message)
 
