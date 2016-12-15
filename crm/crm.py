@@ -27,7 +27,7 @@ def start_module():
     """
 
     # your code
-    table = data_manager.get_table_from_file("crm/customers.csv")
+    table = data_manager.get_table_from_file("crm/crm.csv")
     title = "Customer Relationship Management"
     list_options = ["Display Table", "Add to Table", "Remove from Table", "Update Table", "Show ID of longest name",
                     "Show list of E-mail Subscribers"]
@@ -100,7 +100,7 @@ def add(table):
         what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to add record.")
         if what_to_do[0] == "0":
             check = False
-    data_manager.write_table_to_file("crm/customers.csv", table)
+    data_manager.write_table_to_file("crm/crm.csv", table)
 
     return table
 
