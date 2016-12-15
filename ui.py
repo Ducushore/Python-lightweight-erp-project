@@ -19,12 +19,12 @@ def print_table(table, title_list):
         This function doesn't return anything it only prints to console.
     """
 
-    # your goes code
+    print(title_list)
+    for i in table:
+        print(i)
 
-    pass
 
-
-def print_result(result, label):
+def print_result(result, label=""):
     """
     Displays results of the special functions.
 
@@ -35,7 +35,7 @@ def print_result(result, label):
     Returns:
         This function doesn't return anything it only prints to console.
     """
-
+    print (result)
     # your code
 
     pass

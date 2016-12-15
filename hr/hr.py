@@ -33,27 +33,30 @@ def start_module():
                "Who is closest to average age?",
                ]
 
-    table = data_manager.get_table_from_file("hr/persons.csv")
+    table = data_manager.get_table_from_file("hr/persons_test.csv")
     while True:
-        ui.print_menu("HR menu", options, "Back to Main Menu")
+        ui.print_menu("HR menu", options, "Main Menu")
         option = ui.get_inputs([''], "Please enter a number: ")
         if option[0] == "1":
             show_table(table)
         elif option[0] == "2":
             table = add(table)
         elif option[0] == "3":
-            id_ = ui.get_inputs(['ID: '], "Please type ID to remove ")
+            show_table(table)
+            id_ = ui.get_inputs(['Please type ID to remove: '], "\n")
             table = remove(table, id_)
         elif option[0] == "4":
-            update(table, table[0])
+            show_table(table)
+            id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+            table = update(table, id_)
         elif option[0] == "5":
-            get_persons_closest_to_average()
+            ui.print_result(get_oldest_person(table))
         elif option[0] == "6":
-            get_persons_closest_to_average()
+            ui.print_result(get_persons_closest_to_average(table))
         elif option[0] == "0":
             break
         else:
-            raise KeyError("There is no such option.")
+            ui.print_error_message("There is no such option.")
 
 
 def show_table(table):
@@ -80,9 +83,19 @@ def add(table):
     Returns:
         Table with a new record
     """
-    list_labels = ['ID: ', 'Name: ', 'Birth date: ']
-    new_item = ui.get_inputs(list_labels, "Please provide personal information")
-    table.append(new_item)
+    check = True
+    while check:
+        list_labels = ['Name: ', 'Birth date: ']
+        new_item = ui.get_inputs(list_labels, "Please provide information")
+        validation = common.validate_data(list_labels, new_item)
+        if not validation:
+            ui.print_error_message("Input not valid.\n")
+            continue
+        new_item.insert(0, common.generate_random(table))
+        table.append(new_item)
+        what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add another person.")
+        if what_to_do[0] == '0':
+            check = False
     data_manager.write_table_to_file("hr/persons_test.csv", table)
     return table
 
@@ -98,14 +111,26 @@ def remove(table, id_):
     Returns:
         Table without specified record.
     """
-    check = False
-    for element in table:
-        if element[0] == id_[0]:
-            table.remove(element)
+
+    check = True
+    while check:
+        table_dict = common.creat_dict_from_table(table)
+        if id_[0] in list(table_dict.keys()):
+            del table_dict[id_[0]]
+            table = list(table_dict.values())
             data_manager.write_table_to_file("hr/persons_test.csv", table)
-            check = True
-    if not check:
-        ui.print_error_message('There is no such element')
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to remove another information.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to remove: "], "\n")
+        else:
+            ui.print_error_message("There is no such element.\n")
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(['Please type ID to remove: '], "\n")
     return table
 
 
@@ -120,9 +145,32 @@ def update(table, id_):
     Returns:
         table with updated record
     """
-
-    # your code
-
+    check = True
+    while check:
+        table_dict = common.creat_dict_from_table(table)
+        if id_[0] in list(table_dict.keys()):
+            list_labels = ['Name: ', 'Birth date: ']
+            updated_item = ui.get_inputs(list_labels, "Please provide personal information")
+            validation = common.validate_data(list_labels, updated_item)
+            if not validation:
+                ui.print_error_message("Input not valid.\n")
+                continue
+            updated_item.insert(0, id_[0])
+            table_dict[id_[0]] = updated_item
+            table = list(table_dict.values())  # zrobiłem listę, wcześniej bez 'list'(gdyby nie działało to zmien tutaj)
+            data_manager.write_table_to_file("hr/persons_test.csv", table)
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+        else:
+            ui.print_error_message("There is no such element.\n")
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
     return table
 
 
@@ -132,16 +180,35 @@ def update(table, id_):
 # the question: Who is the oldest person ?
 # return type: list of strings (name or names if there are two more with the same value)
 def get_oldest_person(table):
-
-    # your code
-
-    pass
+    year = int(table[0][2])
+    list_of_people = []
+    for element in table:
+        if int(element[2]) < year:
+            year = int(element[2])
+            list_of_people[0] = element[1]
+        elif int(element[2]) == year:
+            year = int(element[2])
+            list_of_people.append(element[1])
+    return list_of_people
 
 
 # the question: Who is the closest to the average age ?
 # return type: list of strings (name or names if there are two more with the same value)
 def get_persons_closest_to_average(table):
-
-    # your code
-
-    pass
+    year_list = []
+    for element in table:
+        year_list.append(int(element[2]))
+    suma = 0
+    for element in year_list:
+        suma = suma + int(element)
+    avarage = float(suma)/int(len(year_list))
+    first_person = int(table[0][2])
+    list_of_people = []
+    for element in table:
+        if abs(int(element[2]) - avarage) < abs(first_person - avarage):
+            first_person = int(element[2])
+            list_of_people[0] = element[1]
+        elif abs(int(element[2]) - avarage) == abs(first_person - avarage):
+            first_person = int(element[2])
+            list_of_people.append(element[1])
+    return list_of_people
