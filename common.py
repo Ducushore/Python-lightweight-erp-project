@@ -1,9 +1,6 @@
 # implement commonly used functions here
-
 import random
 import string
-
-
 # generate and return a unique and random string
 # other expectation:
 # - at least 2 special char()expect: ';'), 2 number, 2 lower and 2 upper case letter
@@ -11,19 +8,16 @@ import string
 #
 # @table: list of lists
 # @generated: string - randomly generated string (unique in the @table)
+
+
 def generate_random(table):
     """
     Generates random and unique string. Used for id/key generation.
-
     Args:
         table: list containing keys. Generated string should be different then all of them
-
     Returns:
         Random and unique string
     """
-
-    generated = ''
-
     index_list = []
     for element in table:
         index_list.append(element[0])
@@ -37,14 +31,11 @@ def generate_random(table):
         generated = generated + (''.join(random.choice(available[10:36]) for i in range(2)))
         generated = generated + (''.join(random.choice(available[36:62]) for i in range(2)))
         generated = generated + (''.join(random.choice(available[62:]) for i in range(2)))
-
     return generated
 
 
 def creat_dict_from_table(table, item_key=0, start=None, end=None):
-    """Creat dictionary from table according to given key (int, position of a type in table)
-    and range (start, end as int, range of types in table) """
-
+    """Creat dictionary from table according to given key"""
     table_dict = {}
     for item in table:
         elements_to_add = item[start:end]
@@ -65,13 +56,13 @@ def validate_data(list_labels, to_validate):
             int(to_validate[2])
         except ValueError:
             return False
-        if int(to_validate[2]) >= 12 or int(to_validate[2]) <= 1:
+        if int(to_validate[2]) > 12 or int(to_validate[2]) < 1:
             return False
         try:
             int(to_validate[3])
         except ValueError:
             return False
-        if int(to_validate[3]) >= 31 or int(to_validate[3]) <= 1:
+        if int(to_validate[3]) > 31 or int(to_validate[3]) < 1:
             return False
         try:
             int(to_validate[4])
@@ -96,5 +87,36 @@ def validate_data(list_labels, to_validate):
         try:
             int(to_validate[3])
         except ValueError:
+            return False
+        return True
+    elif list_labels == ["Name", "E-Mail", "Newsletter"]:
+        if to_validate[0].isalpha() or to_validate[0].isspace():
+            return True
+        else:
+            return False
+        match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', to_validate[1])
+        if match is False:
+            return False
+        if int(to_validate[2]) != 1 or int(to_validate[2]) != 2:
+            return False
+        return True
+    elif list_labels == ["month", "day", "year", "type", "amount"]:
+        try:
+            int(to_validate[0])
+        except ValueError:
+            return False
+        if int(to_validate[0]) > 12 or int(to_validate[0]) < 1:
+            return False
+        try:
+            int(to_validate[1])
+        except ValueError:
+            return False
+        if int(to_validate[1]) > 31 or int(to_validate[1]) < 1:
+            return False
+        try:
+            int(to_validate[2])
+        except ValueError:
+            return False
+        if to_validate[3] != "income" or to_validate[3] != "outcome":
             return False
         return True
