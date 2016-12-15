@@ -91,13 +91,11 @@ def add(table):
 
         list_labels = ["Name", "E-Mail", "Newsletter"]
         new_item = ui.get_inputs(list_labels, "Please provide your personal information")
-        print(new_item)
         validation = common.validate_data(list_labels, new_item)
         if not validation:
             ui.print_error_message("Input not valid.\n")
             continue
         new_item.insert(0, common.generate_random(table))
-        print(new_item)
         table.append(new_item)
         what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to add record.")
         if what_to_do[0] == "0":
@@ -169,7 +167,6 @@ def update(table, id_):
                 continue
             updated_item.insert(0, id_[0])
             table_dict[id_[0]] = updated_item
-            print(table_dict.values())
             table = list(table_dict.values())
             data_manager.write_table_to_file("crm/crm.csv", table)
             what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to update another information.")

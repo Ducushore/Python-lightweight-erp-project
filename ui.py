@@ -35,7 +35,14 @@ def print_result(result, label):
     """
 
     print("\n" + label)
-    print(result)
+    if type(result) == list and len(result) > 1:
+        print("")
+        for element in result:
+            print(element)
+        print("")
+    else:
+        print(result)
+        print("")
 
     pass
 
