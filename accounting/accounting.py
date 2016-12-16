@@ -149,7 +149,33 @@ def update(table, id_):
         table with updated record
     """
 
-    # your code
+    check = True
+    while check:
+        table_dict = common.creat_dict_from_table(table, id_)
+        if id_[0] in list(table_dict.keys()):
+            list_labels = ["ID: ", "Month: ", "Day: ", "Year: ", "Type: ", "Amount: "]
+            table_dict[id_[0]] = ui.get_inputs(list_labels, "Please provide record information")
+            validation = common.validate_data(list_labels, table_dict[id_[0]])
+            if not validation:
+                ui.print_error_message("Input not valid.\n")
+                continue
+
+        elif option[0] == "6":
+            table = table_dict.values()
+            data_manager.write_table_to_file("store/games.csv", table)
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+        else:
+            ui.print_error_message("There is no such element.\n")
+            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
+            if what_to_do[0] == '0':
+                check = False
+            else:
+                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+    return table
 
     return table
 
@@ -161,9 +187,21 @@ def update(table, id_):
 # return the answer (number)
 def which_year_max(table):
 
-    # your code
-
-    pass
+    type_dict = common.creat_dict_from_table(table, 3, 4, 5)
+    amount_dict = common.creat_dict_from_table(table, 3, 5, 6)
+    profit = 0
+    years = list(type_dict.keys())
+    profit_dict = {}
+    for year in years:
+        for index in range(len(type_dict[year])):
+            if type_dict[year][index] == "in":
+                profit += int(amount_dict[year][index])
+            elif type_dict[year][index] == "out":
+                profit -= int(amount_dict[year][index])
+        profit_dict[year] = profit
+    answer = max(profit_dict, key=profit_dict.get)
+    print(answer)
+    return answer
 
 
 # the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
