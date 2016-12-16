@@ -50,10 +50,10 @@ def start_module():
             id_ = ui.get_inputs(["ID: "], "Please type ID to remove")
             table = update(table, id_)
         elif option[0] == "5":
-            which_year_max(table)
+            ui.print_result(which_year_max(table))
         elif option[0] == "6":
             year = ui.get_inputs(["Year: "], "Please enter year: ")
-            avg_amount(table, year[0])
+            ui.print_result(avg_amount(table, year[0]), "Averege amount is: ")
         elif option[0] == "0":
             break
         else:
@@ -121,7 +121,7 @@ def remove(table, id_):
         if id_[0] in list(table_dict.keys()):
             del table_dict[id_[0]]
             table = table_dict.values()
-            data_manager.write_table_to_file("accounting/items.csv", table)
+            daprintta_manager.write_table_to_file("accounting/items.csv", table)
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to remove another game.")
             if what_to_do[0] == '0':
                 check = False
@@ -144,6 +144,7 @@ def update(table, id_):
     Args:
         table: list in which record should be updated
         id_ (str): id of a record to update
+
 
     Returns:
         table with updated record
@@ -174,19 +175,18 @@ def which_year_max(table):
 
     type_dict = common.creat_dict_from_table(table, 3, 4, 5)
     amount_dict = common.creat_dict_from_table(table, 3, 5, 6)
-    profit = 0
     years = list(type_dict.keys())
     profit_dict = {}
     for year in years:
+        profit = 0
         for index in range(len(type_dict[year])):
             if type_dict[year][index] == "in":
                 profit += int(amount_dict[year][index])
-            elif type_dict[year][index] == "out":
+            if type_dict[year][index] == "out":
                 profit -= int(amount_dict[year][index])
         profit_dict[year] = profit
     answer = max(profit_dict, key=profit_dict.get)
-    print(answer)
-    return answer
+    return int(answer)
 
 
 # the question: What is the average (per item) profit in a given year? [(profit)/(items count) ]
@@ -197,14 +197,16 @@ def avg_amount(table, year):
     i = 0
 
     for line in table:
-        if year == line[3]:
+        if year == int(line[3]):
             i += 1
             if line[4] == "in":
                 profit += int(line[5])
             elif line[4] == "out":
                 profit -= int(line[5])
-    if i == 0:
-        ui.print_error_message("No records of given year.")
-        return
-    avg = profit / i
-    print(str(avg) + "$")
+
+    if i != 0:
+        avg = profit / i
+    else:
+        avg = 0
+
+    return avg
