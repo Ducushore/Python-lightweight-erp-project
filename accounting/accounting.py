@@ -148,33 +148,19 @@ def update(table, id_):
     Returns:
         table with updated record
     """
+    os.system('clear')
+    table_dict = common.creat_dict_from_table(table)
 
-    check = True
-    while check:
-        table_dict = common.creat_dict_from_table(table, id_)
-        if id_[0] in list(table_dict.keys()):
-            list_labels = ["Month: ", "Day: ", "Year: ", "Type: ", "Amount: "]
-            updated_item = ui.get_inputs(list_labels, "Please provide product information": )
-            validation = common.validate_data(list_labels, table_dict[id_[0]])
-            if not validation:
-                ui.print_error_message("Input not valid.\n")
-                continue
-            updated_item.insert(0, id_[0])
-            table_dict[id_[0]] = updated_item
-            table = list(table_dict.values())
-            data_manager.write_table_to_file("accounting/items.csv", table)
-            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
-            if what_to_do[0] == '0':
-                check = False
-            else:
-                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
-        else:
-            ui.print_error_message("There is no such element.\n")
-            what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
-            if what_to_do[0] == '0':
-                check = False
-            else:
-                id_ = ui.get_inputs(["Please type ID to update: "], "\n")
+    if id_ in list(table_dict.keys()):
+        list_labels = ["Month: ", "Day: ", "Year: ", "Type: ", "Amount: "]
+        title = "Please provide product information"
+        updated_record = ui.get_inputs(list_labels, title)
+        updated_record.insert(0, table_dict[id_][0])
+        table_dict[id_] = updated_record
+        table = list(table_dict.values())
+        data_manager.write_table_to_file("store/games.csv", table)
+    else:
+        ui.print_error_message("There is no such element.")
     return table
 
 
