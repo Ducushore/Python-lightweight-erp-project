@@ -195,6 +195,7 @@ def avg_amount(table, year):
 
     profit = 0
     i = 0
+
     for line in table:
         if year == line[3]:
             i += 1
@@ -202,5 +203,8 @@ def avg_amount(table, year):
                 profit += int(line[5])
             elif line[4] == "out":
                 profit -= int(line[5])
+    if i == 0:
+        ui.print_error_message("No records of given year.")
+        return
     avg = profit / i
     print(str(avg) + "$")
