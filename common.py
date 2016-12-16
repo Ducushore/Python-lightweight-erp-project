@@ -105,7 +105,7 @@ def validate_data(list_labels, to_validate):
         if to_validate[2] != "1" or to_validate[2] != "0":
             return False
         return True
-    elif list_labels == ["month", "day", "year", "type", "amount"]:
+    elif list_labels == ["Month", "Day", "Year", "Type", "Amount"]:
         try:
             int(to_validate[0])
         except ValueError:
