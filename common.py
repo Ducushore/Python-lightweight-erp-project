@@ -98,10 +98,6 @@ def validate_data(list_labels, to_validate):
             pass
         else:
             return False
-        match = re.match('^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$', to_validate[1])
-        print(match)
-        if match == None:
-            return False
         if to_validate[2] != "1" or to_validate[2] != "0":
             return False
         return True
