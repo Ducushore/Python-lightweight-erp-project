@@ -71,6 +71,9 @@ def print_result(result, label=""):
         for element in result:
             print(element)
         print("")
+    elif type(result) == dict and len(result) > 1:
+        for key, value in result.items():
+            print(key, value)
     else:
         print(result)
         print("")
