@@ -208,6 +208,14 @@ def which_year_max(table):
 # return the answer (number)
 def avg_amount(table, year):
 
-    # your code
-
-    pass
+    profit = 0
+    i = 0
+    for line in table:
+        if year == line[3]:
+            i += 1
+            if line[4] == "in":
+                profit += int(line[5])
+            elif line[4] == "out":
+                profit -= int(line[5])
+    avg = profit / i
+    print(str(avg) + "$")
