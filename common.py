@@ -1,7 +1,7 @@
 # implement commonly used functions here
 import random
 import string
-import re
+
 
 # generate and return a unique and random string
 # other expectation:
@@ -73,13 +73,13 @@ def validate_data(list_labels, to_validate):
             return False
         return True
     elif list_labels == ['Name: ', 'Birth date: ']:
-        if to_validate[0].isalpha() or to_validate[0].isspace():
-            return True
-        else:
-            return False
         try:
             int(to_validate[1])
         except ValueError:
+            return False
+        if to_validate[0].isalpha() or to_validate[0].isspace():
+            return True
+        else:
             return False
         return True
 
@@ -98,6 +98,7 @@ def validate_data(list_labels, to_validate):
             pass
         else:
             return False
+
         if to_validate[2] != "1" or to_validate[2] != "0":
             return False
         return True

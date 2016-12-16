@@ -69,7 +69,7 @@ def show_table(table):
     """
 
     # your code
-
+    os.system("clear")
     title_list = ["ID", "Name", "E-Mail", "Newsletter"]
 
     ui.print_table(table, title_list)
@@ -100,6 +100,9 @@ def add(table):
         what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to add record.")
         if what_to_do[0] == "0":
             check = False
+            os.system("clear")
+        os.system("clear")
+        show_table(table)
     data_manager.write_table_to_file("crm/customers.csv", table)
 
     return table
@@ -129,14 +132,20 @@ def remove(table, id_):
             what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to remove another information.")
             if what_to_do[0] == '0':
                 check = False
+                os.system("clear")
             else:
+                os.system("clear")
+                show_table(table)
                 id_ = ui.get_inputs(["Please, type ID to remove: "], "\n")
         else:
             ui.print_error_message("There is no such element.")
             what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to try one more time.")
             if what_to_do[0] == '0':
                 check = False
+                os.system("clear")
             else:
+                os.system("clear")
+                show_table(table)
                 id_ = ui.get_inputs(['Please, type ID to remove: '], "\n")
     return table
 
@@ -169,17 +178,24 @@ def update(table, id_):
             table_dict[id_[0]] = updated_item
             table = list(table_dict.values())
             data_manager.write_table_to_file("crm/customers.csv", table)
+            os.system("clear")
             what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to update another information.")
             if what_to_do[0] == '0':
                 check = False
+                os.system("clear")
             else:
+                os.system("clear")
+                show_table(table)
                 id_ = ui.get_inputs(["Please type ID to update: "], "\n")
         else:
             ui.print_error_message("There is no such element.")
             what_to_do = ui.get_inputs([""], "Press 0 or exit or 1 to try one more time.")
             if what_to_do[0] == '0':
                 check = False
+                os.system("clear")
             else:
+                os.system("clear")
+                show_table(table)
                 id_ = ui.get_inputs(["Please, type ID to update: "], "\n")
     return table
 
@@ -203,6 +219,7 @@ def get_longest_name_id(table):
             name = element[1]
             id_ = element[0]
             character = str(element[1][0]).lower()
+            os.system("clear")
     return id_
 
 # the question: Which customers has subscribed to the newsletter?
@@ -218,4 +235,5 @@ def get_subscribed_emails(table):
             subs_mail.append(str(line[2] + ";" + line[1]))
         else:
             continue
+    os.system("clear")
     return subs_mail

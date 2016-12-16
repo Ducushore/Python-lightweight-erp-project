@@ -35,7 +35,7 @@ def start_module():
 
     table = data_manager.get_table_from_file("hr/persons_test.csv")
     while True:
-        ui.print_menu("HR menu", options, "Main Menu")
+        ui.print_menu("\nHR menu", options, "Main Menu")
         option = ui.get_inputs([''], "Please enter a number: ")
         if option[0] == "1":
             show_table(table)
@@ -50,9 +50,9 @@ def start_module():
             id_ = ui.get_inputs(["Please type ID to update: "], "\n")
             table = update(table, id_)
         elif option[0] == "5":
-            ui.print_result(get_oldest_person(table))
+            ui.print_result(get_oldest_person(table), "The oldest person is: ")
         elif option[0] == "6":
-            ui.print_result(get_persons_closest_to_average(table))
+            ui.print_result(get_persons_closest_to_average(table), "People closest to average: ")
         elif option[0] == "0":
             break
         else:
@@ -69,6 +69,7 @@ def show_table(table):
     Returns:
         None
     """
+    os.system('clear')
     title_list = ['ID', 'Name', 'Birth date']
     ui.print_table(table, title_list)
 
@@ -96,6 +97,9 @@ def add(table):
         what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to add another person.")
         if what_to_do[0] == '0':
             check = False
+            os.system('clear')
+        os.system('clear')
+        show_table(table)
     data_manager.write_table_to_file("hr/persons_test.csv", table)
     return table
 
@@ -122,14 +126,20 @@ def remove(table, id_):
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to remove another information.")
             if what_to_do[0] == '0':
                 check = False
+                os.system('clear')
             else:
+                os.system('clear')
+                show_table(table)
                 id_ = ui.get_inputs(["Please type ID to remove: "], "\n")
         else:
             ui.print_error_message("There is no such element.\n")
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
             if what_to_do[0] == '0':
                 check = False
+                os.system('clear')
             else:
+                os.system('clear')
+                show_table(table)
                 id_ = ui.get_inputs(['Please type ID to remove: '], "\n")
     return table
 
@@ -159,17 +169,25 @@ def update(table, id_):
             table_dict[id_[0]] = updated_item
             table = list(table_dict.values())  # zrobiłem listę, wcześniej bez 'list'(gdyby nie działało to zmien tutaj)
             data_manager.write_table_to_file("hr/persons_test.csv", table)
+            os.system('clear')
+            show_table(table)
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to update another information.")
             if what_to_do[0] == '0':
                 check = False
+                os.system('clear')
             else:
+                os.system('clear')
+                show_table(table)
                 id_ = ui.get_inputs(["Please type ID to update: "], "\n")
         else:
             ui.print_error_message("There is no such element.\n")
             what_to_do = ui.get_inputs([""], "Press 0 to exit or 1 to try one more time.")
             if what_to_do[0] == '0':
                 check = False
+                os.system('clear')
             else:
+                os.system('clear')
+                show_table(table)
                 id_ = ui.get_inputs(["Please type ID to update: "], "\n")
     return table
 
@@ -189,6 +207,7 @@ def get_oldest_person(table):
         elif int(element[2]) == year:
             year = int(element[2])
             list_of_people.append(element[1])
+    os.system('clear')
     return list_of_people
 
 
@@ -211,4 +230,5 @@ def get_persons_closest_to_average(table):
         elif abs(int(element[2]) - avarage) == abs(first_person - avarage):
             first_person = int(element[2])
             list_of_people.append(element[1])
+    os.system('clear')
     return list_of_people

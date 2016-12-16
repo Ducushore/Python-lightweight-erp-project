@@ -66,10 +66,14 @@ def print_result(result, label=""):
     """
 
     print("\n" + label)
-    if type(result) == list and len(result) > 1:
+    if type(result) == list:
         print("")
         for element in result:
             print(element)
+        print("")
+    elif type(result) == dict:
+        for key, value in result.items():
+            print(key, value)
         print("")
     else:
         print(result)
@@ -97,15 +101,12 @@ def print_menu(title, list_options, exit_message):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
     print (title + ':')
     i = 1
     for element in list_options:
         print ('\t' + str([i]) + ' ' + element)
         i += 1
     print ('\t[0] ' + exit_message)
-
-    pass
 
 
 def get_inputs(list_labels, title):
