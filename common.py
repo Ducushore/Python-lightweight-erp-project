@@ -73,13 +73,13 @@ def validate_data(list_labels, to_validate):
             return False
         return True
     elif list_labels == ['Name: ', 'Birth date: ']:
-        if to_validate[0].isalpha() or to_validate[0].isspace():
-            return True
-        else:
-            return False
         try:
             int(to_validate[1])
         except ValueError:
+            return False
+        if to_validate[0].isalpha() or to_validate[0].isspace():
+            return True
+        else:
             return False
         return True
 
