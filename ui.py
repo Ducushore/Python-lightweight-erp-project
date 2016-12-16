@@ -100,15 +100,12 @@ def print_menu(title, list_options, exit_message):
         This function doesn't return anything it only prints to console.
     """
 
-    # your code
     print (title + ':')
     i = 1
     for element in list_options:
         print ('\t' + str([i]) + ' ' + element)
         i += 1
     print ('\t[0] ' + exit_message)
-
-    pass
 
 
 def get_inputs(list_labels, title):
