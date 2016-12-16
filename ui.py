@@ -66,12 +66,12 @@ def print_result(result, label=""):
     """
 
     print("\n" + label)
-    if type(result) == list and len(result) > 1:
+    if type(result) == list:
         print("")
         for element in result:
             print(element)
         print("")
-    elif type(result) == dict and len(result) > 1:
+    elif type(result) == dict:
         for key, value in result.items():
             print(key, value)
     else:
