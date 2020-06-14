@@ -215,6 +215,7 @@ def get_oldest_person(table):
 # return type: list of strings (name or names if there are two more with the same value)
 def get_persons_closest_to_average(table):
     year_list = []
+
     for element in table:
         year_list.append(int(element[2]))
     suma = 0

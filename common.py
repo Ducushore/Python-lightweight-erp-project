@@ -38,6 +38,8 @@ def generate_random(table):
         generated = generated + (''.join(random.choice(available[62:]) for i in range(2)))
 
     return generated
+
+    
 def creat_dict_from_table(table, item_key=0, start=None, end=None):
     """Creat dictionary from table according to given key"""
     table_dict = {}
